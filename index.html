@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<title>Rock Pape Scissors</title>
+</head>
+<body>
+  <h1>Let's play!</h1>
+  <div class="game-block">
+    <div class="game-element" id="rock"> <button class="button">Rock</button></div>
+    <div class="game-element" id="paper"><button class="button">Paper</button></div>
+    <div class="game-element" id="scissor"><button class="button">Scissors</button></div>
+  </div>
+
+  <div id="score">
+    <div class="player" id="player1">You</div>
+    <div class="scoring">0:0</div>
+    <div class="player" id="player2">Computer</div>
+  </div>
+
+<div class="result-round"></div>
+
+<script type="text/javascript">
+
+  let scoring = document.querySelector('.scoring');
+  let rock = document.getElementbyId('rock');
+  let paper = document.getElementbyId('paper');
+  let scissors = document.getElementbyId('scissors');
+
+  rock.addEventListener('click',game);
+  paper.addEventListener("click",game);
+  scissors.addEventListener("click",game);
+
+let playerScore = 0;
+let computerScore = 0;
+
+function game(event) {
+  let computerChoice = computerPlay();
+  let playerChoice = this.id;
+  let resultRound = defineWinnerAtRound(playChoice, computerChoice);
+
+  let thisRound = document.createElement('div');
+  thisRound.innerHTML = 'Player had chosen ${playerChoice}, computer - ${computerChoice}. ${resultRound}';
+  let resultsAllRoundes = document.querySelector('.result-round');
+  resultsAllRoundes.prepend(thisRound);
+
+  switch (resultRound) {
+    case "Tie!":
+    case "Something wrong":
+    break;
+
+    case "Computer won!":
+    computerScore++;
+    break;
+
+    case "You won!":
+    playerScore++;
+    break;
+  }
+
+  scoring.innerHTML = `${playerScore}:${computerScore}`;
+
+  if (playerScore === 5) {
+    alert ('Congratulations! You won!');
+    playerScore = computerScore = 0;
+    scoring.innerHTML=`${playerScore}:${computerScore}`;
+    resultsAllRoundes.innerHTML="";
+  }
+
+  else if (computerScore === 5) {
+    alert ('Computer won!');
+    playerScore = computerScore = 0;
+    scoring.innerHTML= `${playerScore}:${computerScore}`;
+    resultsAllRoundes.innerHTML="";
+  }
+
+  function computerPlay() {
+    let choice = Math.floor(Math.random()*3);
+    let set = ['rock', 'paper', 'scissors'];
+    return set[choice];
+  }
+
+  function defineWinnerAtRound (playerChoice, computerChoice) {
+    let result;
+    if (playerChoice === null || playerChoice === undefined || computerChoice ===null || computerChoice === undefined ) {
+      return result = "Something wrong";
+    }
+
+    if (playerChoice === computerChoice) {
+      return result = "Tie!";
+    }
+
+    if ((playerChoice === "rock" && computerChoice === "scissors") || (playerChoice === "scissors" && computerChoice === "paper") || (playChoice === "paper" && computerChoice === "rock")) {
+      return result = "You won!";
+    }
+
+    else {
+      return result = "Computer won!";
+    }
+
+  }
+
+  </script>
+
+</body>
+</html>
